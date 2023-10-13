@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 
 import db from "../db.js";
+import { ObjectId } from "mongodb";
 
 dotenv.config();
 
@@ -34,6 +35,22 @@ export async function getProducts(req, res) {
   try {
     const products = await db.collection("products").find({}).toArray();
     res.send(products);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      message: "Algo deu errado, tente novamente",
+      err: err.response,
+    });
+  }
+}
+
+export async function getProduct(req, res) {
+  const { id } = req.params;
+  try {
+    const product = await db
+      .collection("products")
+      .findOne({ _id: new ObjectId(id) });
+    res.send(product);
   } catch (err) {
     console.log(err);
     res.status(500).send({
