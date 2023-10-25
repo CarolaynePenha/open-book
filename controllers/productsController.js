@@ -59,3 +59,21 @@ export async function getProduct(req, res) {
     });
   }
 }
+
+export async function getSearchProducts(req, res) {
+  const { srcBar } = req.params;
+  console.log("srcBar: ", srcBar);
+  try {
+    const products = await db
+      .collection("products")
+      .find({ title: { $in: [srcBar] } })
+      .toArray();
+    res.send(products);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      message: "Algo deu errado, tente novamente",
+      err: err.response,
+    });
+  }
+}

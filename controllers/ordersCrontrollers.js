@@ -4,6 +4,7 @@ import db from "../db.js";
 
 export async function postOrders(req, res) {
   const order = req.body;
+
   const session = res.locals.session;
   try {
     await db.collection("orders").insertOne({

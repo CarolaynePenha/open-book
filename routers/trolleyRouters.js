@@ -2,23 +2,25 @@ import { Router } from "express";
 
 import tokenValidation from "../middlewares/tokenValidation.js";
 import {
-  deleteTrolleyItens,
-  getTrolleyItens,
-  postTrolleyItens,
+  deleteTrolleyItem,
+  deleteTrolleyItems,
+  getTrolleyItems,
+  postTrolleyItems,
 } from "../controllers/trolleyControllers.js";
 import { validID, validIdTrolley } from "../middlewares/ValidID.js";
 
 const trolleyRouter = Router();
 
-trolleyRouter.post("/trolley/:id", tokenValidation, validID, postTrolleyItens);
+trolleyRouter.post("/trolley/:id", tokenValidation, validID, postTrolleyItems);
 
-trolleyRouter.get("/trolley", tokenValidation, getTrolleyItens);
+trolleyRouter.get("/trolley", tokenValidation, getTrolleyItems);
 
 trolleyRouter.delete(
   "/trolley/:id",
   tokenValidation,
   validIdTrolley,
-  deleteTrolleyItens
+  deleteTrolleyItem
 );
+trolleyRouter.delete("/trolley", tokenValidation, deleteTrolleyItems);
 
 export default trolleyRouter;

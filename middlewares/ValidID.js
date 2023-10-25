@@ -15,6 +15,7 @@ export async function validID(req, res, next) {
 
 export async function validIdTrolley(req, res, next) {
   const { id } = req.params;
+
   const validID = await db
     .collection("trolley")
     .findOne({ _id: new ObjectId(id) });

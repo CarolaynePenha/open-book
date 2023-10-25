@@ -78,17 +78,73 @@ export async function productSchema(req, res, next) {
 
 export async function orderSchema(req, res, next) {
   const order = req.body;
+
   const orderSchema = joi.object({
-    image: joi.string().uri().required(),
-    title: joi.string().max(100).min(5).required(),
-    price: joi.number().required(),
-    address: joi.string().required(),
+    products: joi.array().items(
+      joi.object({
+        image: joi.string().uri().required(),
+        title: joi.string().max(100).min(4).required(),
+        price: joi.number().required(),
+        quantity: joi.number().integer().required(),
+        seller: joi.string().required(),
+      })
+    ),
+
+    street: joi.string().required(),
+    neighborhood: joi.string().required(),
+    city: joi.string().required(),
+    cpf: joi
+      .string()
+      .pattern(/([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})/)
+      .required(),
+    cep: joi
+      .string()
+      .pattern(/([0-9]{5}[-]?[0-9]{3})/)
+      .required(),
     email: joi
       .string()
       .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
       .required(),
-    name: joi.string().min(5).max(40).required(),
-    quantity: joi.number().integer().required(),
+    name: joi.string().min(4).max(40).required(),
+
+    totalPrice: joi.number().required(),
+    totalQuantity: joi.number().integer().required(),
+    state: joi
+      .string()
+      .valid(
+        "AC",
+        "AL",
+        "AP",
+        "AM",
+        "BA",
+        "CE",
+        "DF",
+        "ES",
+        "GO",
+        "MA",
+        "MT",
+        "MS",
+        "MG",
+        "PA",
+        "PB",
+        "PR",
+        "PE",
+        "PI",
+        "RJ",
+        "RN",
+        "RS",
+        "RO",
+        "RR",
+        "SC",
+        "SP",
+        "SE",
+        "TO"
+      )
+      .required(),
+    paymentMethod: joi
+      .string()
+      .valid("Cartão de crédito", "Boleto", "Pix")
+      .required(),
   });
 
   const validation = orderSchema.validate(order, { abortEarly: false });

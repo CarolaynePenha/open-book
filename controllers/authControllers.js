@@ -41,7 +41,10 @@ export async function signIn(req, res) {
         userId: user._id,
         token,
       });
-      res.send({ token: token }).status(200);
+
+      res
+        .send({ token: token, name: user.name, email: user.email })
+        .status(200);
     } else {
       res.send("user not found").status(404);
     }
