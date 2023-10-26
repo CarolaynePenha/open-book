@@ -24,10 +24,14 @@ export async function postOrders(req, res) {
 
 export async function getOrders(req, res) {
   const session = res.locals.session;
+  const page = parseInt(req.query.page);
+  const limit = 5;
   try {
     const orders = await db
       .collection("orders")
       .find({ userId: session.userId })
+      .skip(page * limit)
+      .limit(limit)
       .toArray();
     res.send(orders);
   } catch (err) {

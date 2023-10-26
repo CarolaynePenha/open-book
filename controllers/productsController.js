@@ -61,12 +61,13 @@ export async function getProduct(req, res) {
 }
 
 export async function getSearchProducts(req, res) {
-  const { srcBar } = req.params;
+  const srcBar = req.query.src;
   console.log("srcBar: ", srcBar);
   try {
+    const regex = new RegExp(srcBar, "i");
     const products = await db
       .collection("products")
-      .find({ title: { $in: [srcBar] } })
+      .find({ title: { $regex: regex } })
       .toArray();
     res.send(products);
   } catch (err) {

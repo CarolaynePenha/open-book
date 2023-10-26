@@ -89,3 +89,29 @@ export async function getTrolleyItems(req, res) {
     });
   }
 }
+
+export async function putTrolleyItem(req, res) {
+  const { id } = req.params;
+  const { quantity } = req.body;
+  console.log("quantity: ", quantity);
+
+  try {
+    const product = await db
+      .collection("trolley")
+      .findOne({ _id: new ObjectId(id) });
+    const total = product.price * quantity;
+    await db
+      .collection("trolley")
+      .updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { quantity: quantity, total: total } }
+      );
+    res.sendStatus(201);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      message: "Algo deu errado, tente novamente",
+      err: err.response,
+    });
+  }
+}

@@ -16,6 +16,6 @@ productsRouter.get("/products", getCategory, getProducts);
 
 productsRouter.get("/products/:id", getProduct);
 
-productsRouter.get("/products/:srcBar", getSearchProducts);
+productsRouter.get("/productsSrc", getSearchProducts);
 
 export default productsRouter;

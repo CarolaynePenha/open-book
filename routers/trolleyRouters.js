@@ -6,12 +6,20 @@ import {
   deleteTrolleyItems,
   getTrolleyItems,
   postTrolleyItems,
+  putTrolleyItem,
 } from "../controllers/trolleyControllers.js";
 import { validID, validIdTrolley } from "../middlewares/ValidID.js";
 
 const trolleyRouter = Router();
 
 trolleyRouter.post("/trolley/:id", tokenValidation, validID, postTrolleyItems);
+
+trolleyRouter.put(
+  "/trolley/:id",
+  tokenValidation,
+  validIdTrolley,
+  putTrolleyItem
+);
 
 trolleyRouter.get("/trolley", tokenValidation, getTrolleyItems);
 
